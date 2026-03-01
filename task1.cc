@@ -45,7 +45,7 @@ void solution() {
        {"1 + eps + eps/2", 1 + eps + eps / 2}});
 
   for (int i = 0; i < arr.size(); i++) {
-    for (int j = i; j < arr.size(); j++) {
+    for (int j = 0; j < arr.size(); j++) {
       const auto& [n1, item1] = arr[i];
       const auto& [n2, item2] = arr[j];
       
