@@ -1,6 +1,7 @@
 use core::f64;
 use image::{Rgb, RgbImage};
 use num::Complex;
+use std::f64::consts::PI;
 
 const ABS_TOL: f64 = 1e-15;
 
@@ -110,10 +111,12 @@ where
 }
 
 fn run_first(max_iter: usize) {
-    let range = (7.7, 7.8);
+    let range = (17.2, 17.27);
     let f = |x: f64| x.tan() - x;
     let der_f = |x: f64| x.tan().powi(2);
-    let phi = |x: f64| x.atan() + 2. * f64::consts::PI;
+    let phi = |x: f64| x.atan() + 5. * f64::consts::PI;
+
+    println!("{}", PI / 2. + 5. * PI);
 
     println!("f(x) = tan(x) - x, [a, b] = [{}, {}]", range.0, range.1);
     println!("[BISECTION]");
@@ -180,7 +183,7 @@ fn bassin_draw() {
 }
 
 fn main() {
-    run_first(100);
+    run_first(1000);
     println!("");
     run_second(Complex::new(1000., 0.5), 100);
     run_second(Complex::new(-1000., 10.), 100);

@@ -11,6 +11,11 @@ path = "task2.rs"
 name = "task3"
 path = "task3.rs"
 
+[[bin]]
+name = "task4"
+path = "task4.rs"
+
 [dependencies]
 image = "0.25.10"
 num = "0.4.3"
+plotly = { version = "0.14", features = ["static_export_geckodriver"]}

@@ -1,6 +1,5 @@
 use core::f64;
 
-use num::abs;
 use plotly::{Plot, Scatter};
 
 fn div_diff(p: &[(f64, f64)]) -> f64 {
@@ -58,12 +57,48 @@ where
     plot.write_html(format!("task3-{}.html", name));
 }
 
+fn draw_plot2<P1, P2>(p1: P1, p2: P2)
+where
+    P1: Fn(usize) -> f64,
+    P2: Fn(usize) -> f64,
+{
+    let mut plot = Plot::new();
+    let xs: Vec<_> = (3..=10).collect();
+    let ys: Vec<_> = xs.iter().map(|&x| p1(x)).collect();
+    let ys_cheb: Vec<_> = xs.iter().map(|&x| p2(x)).collect();
+    plot.add_trace(Scatter::new(xs.clone(), ys).name("|P_n(x) - f(x)|"));
+    plot.add_trace(Scatter::new(xs.clone(), ys_cheb).name("cheb"));
+    plot.write_image(
+        format!("task3.png"),
+        plotly::ImageFormat::PNG,
+        1600,
+        1200,
+        1.,
+    )
+    .unwrap();
+}
+
 fn main() {
+    let mut max_error1 = Vec::new();
+    let mut max_error2 = Vec::new();
+
     for n in 3..=10 {
         let points: Vec<_> = (0..=n).map(|i| (xi(i, n), f(xi(i, n)))).collect();
         let cheb: Vec<_> = cheb_nodes(n).map(|x| (x, f(x))).collect();
         let p1 = newton(&points).unwrap();
         let p2 = newton(&cheb).unwrap();
+        let max1 = (-500..=500)
+            .map(|i| (i as f64) / 500.)
+            .map(|x| (p1(x) - f(x)).abs())
+            .fold(f64::NEG_INFINITY, |a, b| a.max(b));
+        let max2 = (-500..=500)
+            .map(|i| (i as f64) / 500.)
+            .map(|x| (p2(x) - f(x)).abs())
+            .fold(f64::NEG_INFINITY, |a, b| a.max(b));
         draw_plot(p1, p2, &format!("n={}", n));
+        max_error1.push(max1);
+        max_error2.push(max2);
     }
+
+    draw_plot2(|n| max_error1[n - 3], |n| max_error2[n - 3]);
 }
