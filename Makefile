@@ -18,11 +18,10 @@ task3: task3.rs prepare
 	$(CARGO) run --bin task3
 
 task4: task4.rs prepare
-	$(CARGO) run --bin task4 --release
+	$(CARGO) run --bin task4
 
-task5: task5.hs prepare
-	$(GHC) $< -odir $(BUILD_DIR) -hidir $(BUILD_DIR) -o $(BUILD_DIR)/task5
-	./build/task5
+task5: task5.rs prepare
+	$(CARGO) run --bin task5
 
 clean:
 	rm -rf $(BUILD_DIR)
