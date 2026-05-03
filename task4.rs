@@ -1,4 +1,3 @@
-// FIXME reinspect code;
 use std::f64::consts::{E, PI};
 
 fn simpsons(f: &impl Fn(f64) -> f64, a: f64, b: f64) -> f64 {
@@ -108,7 +107,7 @@ fn calc_approx(f: impl Fn(f64) -> f64, a: f64, b: f64, exact: f64) {
 }
 
 fn main() {
-    let eps = 1e-8;
+    let eps = 1e-14;
     // exact 8.0349107
     let f1 = |x: f64| (PI * x.powi(5)).sin() / (x.powi(5) * (1. - x));
     let range1 = (eps, 1. - eps);
@@ -121,8 +120,8 @@ fn main() {
     let range2 = (eps, 1. - eps);
 
     println!("[FIRST]");
-    run(&f1, range1, 6000);
+    run(&f1, range1, 20000);
     println!("[SECOND]");
-    run(&f2, range2, 6000);
+    run(&f2, range2, 10000);
     calc_approx(|x| E.powf(x), 0., 1., E - 1.);
 }
